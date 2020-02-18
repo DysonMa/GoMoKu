@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace GoMoKu
 {
@@ -12,6 +13,7 @@ namespace GoMoKu
         private PieceType currentPlayer = PieceType.BLACK;
         private PieceType winner = PieceType.NONE;
         public PieceType Winner { get { return winner; } }
+        public PieceType CurrentPlayer { get { return currentPlayer; } }
 
 
         public bool CanBePlaced(int x, int y)
@@ -46,36 +48,106 @@ namespace GoMoKu
             int centerY = board.LastPieceNode.Y;
 
             // 檢查八個不同方向
-            //int countAll = 1;
+            int countAll_1 = 1;
+            int countAll_2 = 1;
+            int countAll_3 = 1;
+            int countAll_4 = 1;
+
             for (int xDir = -1; xDir <= 1; xDir++)
             {
-                int countAll = 1;
                 for (int yDir = -1; yDir <= 1; yDir++)
                 {
                     // 排除中間的情況
                     if (xDir == 0 && yDir == 0)
                         continue; // 略過迴圈剩下的部分，直接跳到下次迴圈開始
 
-
+                    // x - y = 0
                     // 紀錄現在看到幾顆相同的棋子
                     // 用for迴圈強制執行五次，在下的棋子四周5x5的範圍內去計算各個方向有沒有符合加總5顆
-                    for (int count = 1; count < 5; count++)
-                    {
-                        int targetX = centerX + count * xDir;
-                        int targetY = centerY + count * yDir;
+                    if (xDir - yDir == 0)
+                        for (int count = 1; count < 5; count++)
+                        {
+                            int targetX = centerX + count * xDir;
+                            int targetY = centerY + count * yDir;
 
-                        // 檢查顏色是否相同
-                        if (targetX < 0 || targetX >= Board.NODE_COUNT ||
-                            targetY < 0 || targetY >= Board.NODE_COUNT ||
-                            board.GetPieceType(targetX, targetY) != currentPlayer)
-                            continue;
+                            // 檢查顏色是否相同
+                            if (targetX < 0 || targetX >= Board.NODE_COUNT ||
+                                targetY < 0 || targetY >= Board.NODE_COUNT ||
+                                board.GetPieceType(targetX, targetY) != currentPlayer)
+                                break;
 
+                            else
+                                countAll_1++;
+                            //MessageBox.Show("xdir:" + xDir + "ydir:" + yDir + "countAll_1:" + countAll_1);
 
-                        countAll++;
-                    }
+                        }
+
+                    // x + y = 0
+                    // 紀錄現在看到幾顆相同的棋子
+                    // 用for迴圈強制執行五次，在下的棋子四周5x5的範圍內去計算各個方向有沒有符合加總5顆
+                    if (xDir + yDir == 0)
+                        for (int count = 1; count < 5; count++)
+                        {
+                            int targetX = centerX + count * xDir;
+                            int targetY = centerY + count * yDir;
+
+                            // 檢查顏色是否相同
+                            if (targetX < 0 || targetX >= Board.NODE_COUNT ||
+                                targetY < 0 || targetY >= Board.NODE_COUNT ||
+                                board.GetPieceType(targetX, targetY) != currentPlayer)
+                                break;
+
+                            else
+                                countAll_2++;
+                            //MessageBox.Show("xdir:" + xDir + "ydir:" + yDir + "countAll_2:" + countAll_2);
+
+                        }
+
+                    // y = 0
+                    // 紀錄現在看到幾顆相同的棋子
+                    // 用for迴圈強制執行五次，在下的棋子四周5x5的範圍內去計算各個方向有沒有符合加總5顆
+                    if (yDir == 0)
+                        for (int count = 1; count < 5; count++)
+                        {
+                            int targetX = centerX + count * xDir;
+                            int targetY = centerY + count * yDir;
+
+                            // 檢查顏色是否相同
+                            if (targetX < 0 || targetX >= Board.NODE_COUNT ||
+                                targetY < 0 || targetY >= Board.NODE_COUNT ||
+                                board.GetPieceType(targetX, targetY) != currentPlayer)
+                                break;
+
+                            else
+                                countAll_3++;
+                            //MessageBox.Show("xdir:" + xDir + "ydir:" + yDir + "countAll_3:" + countAll_3);
+
+                        }
+
+                    // x = 0
+                    // 紀錄現在看到幾顆相同的棋子
+                    // 用for迴圈強制執行五次，在下的棋子四周5x5的範圍內去計算各個方向有沒有符合加總5顆
+                    if (xDir == 0)
+                        for (int count = 1; count < 5; count++)
+                        {
+                            int targetX = centerX + count * xDir;
+                            int targetY = centerY + count * yDir;
+
+                            // 檢查顏色是否相同
+                            if (targetX < 0 || targetX >= Board.NODE_COUNT ||
+                                targetY < 0 || targetY >= Board.NODE_COUNT ||
+                                board.GetPieceType(targetX, targetY) != currentPlayer)
+                                break;
+
+                            else
+                                countAll_4++;
+                            MessageBox.Show("xdir:" + xDir + "ydir:" + yDir + "countAll_4:" + countAll_4);
+
+                        }
+
 
                     // 檢查是否看到加總五顆棋子
-                    if (countAll == 5)
+                    if (countAll_1 >= 5 || countAll_2 >= 5 || countAll_3 >= 5 || countAll_4 >= 5)
                         winner = currentPlayer;
                 }
 
@@ -84,14 +156,38 @@ namespace GoMoKu
 
         public void Restart()
         {
-            for (int i =1; i < board.pieces.GetLength(0);i++)
+            
+
+
+
+            int row = board.pieces.GetLength(0);
+            int column = board.pieces.GetLength(1);
+
+            for (int i = 0; i < row; i++)
             {
-                for (int j = 1; j < board.pieces.GetLength(1); j++)
+                for (int j = 0; j < column; j++)
                 {
-                    board.Clear(i, j, board.GetPieceType(i, j));
+                    
+
+                    if (board.pieces[i, j] != null)
+                    {
+                        board.pieces[i, j].Image = null;
+                        //MessageBox.Show(board.pieces[i, j].ToString());
+
+                        //board.pieces[i, j] = board.Clear(i, j, board.GetPieceType(i, j));
+                        //board.pieces[i, j] = blank;
+                        //board.pieces[i, j].Dispose();
+                        //MessageBox.Show(board.pieces[i, j].ToString());
+
+                    }
+
                 }
 
             }
+            Array.Clear(board.pieces, 0, board.pieces.Length);
+
+
+            //return board.pieces;
         }
     }
 }

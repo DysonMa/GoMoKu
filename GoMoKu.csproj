@@ -57,6 +57,9 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="Game.cs" />
+    <Compile Include="None.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Piece.cs">
       <SubType>Component</SubType>
     </Compile>

@@ -118,15 +118,51 @@ namespace GoMoKu
                 return -1; //無任何點符合
         }
 
-        public void Clear(int x, int y, PieceType type)
+        public Piece Clear(int x, int y, PieceType type)
         {
             // 找出最近的節點(Node)
-            Point nodeId = new Point(x,y);
+            Point nodeId = new Point(x, y);
+            //Point nodeId = findTheClosetNode(x, y);
 
             // 根據Type，產生對應的棋子
             Point formPos = convertToFormPosition(nodeId);
             if (type != PieceType.NONE)
+            {
                 pieces[nodeId.X, nodeId.Y].Image = null;
+                //pieces[nodeId.X, nodeId.Y] = picturebx;
+                
+                //pieces[nodeId.X, nodeId.Y] = new BlackPiece(formPos.X, formPos.Y);
+            }
+
+
+            //pieces = new Piece[NODE_COUNT, NODE_COUNT];
+
+
+
+            // 找出最近的節點(Node)
+            //Point nodeId = findTheClosetNode(x, y);
+
+            // 如果沒有的話，回傳false
+            //if (nodeId == NO_MATCH_NODE)
+            //    return null;
+
+            //// 如果有的話，檢查棋子是否已經存在
+            //if (pieces[nodeId.X, nodeId.Y] != null)
+            //    return null;
+
+            //// 根據Type，產生對應的棋子
+            ////Point formPos = convertToFormPosition(nodeId);
+            //if (type == PieceType.BLACK)
+            //    pieces[nodeId.X, nodeId.Y] = new BlackPiece(formPos.X, formPos.Y);
+            //else if (type == PieceType.WHITE)
+            //    pieces[nodeId.X, nodeId.Y] = new WhitePiece(formPos.X, formPos.Y);
+
+            // 紀錄最後下棋子的位置
+            //lastPieceNode = nodeId;
+
+
+            return pieces[nodeId.X, nodeId.Y];
+
         }
     }
 }
